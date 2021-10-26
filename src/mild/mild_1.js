@@ -55,7 +55,7 @@ export function maxAndMin(numbers) {
 export function countArray(array) {
     let dict = new Object();    // Create object to store seen keys and their corresponding counts
 
-    for (let key in array) {
+    for (const key of array) {
         if (key in dict) {
             dict[key] += 1;
         } else {
