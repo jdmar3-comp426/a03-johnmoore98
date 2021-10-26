@@ -25,7 +25,7 @@ export function sumToString(a, b) {
  */
 export function getIncreasingArray(startNumber, endNumber) {
     let arr = [];
-    for (let i = startNumber; i <+ endNumber; i++) {
+    for (let i = startNumber; i <= endNumber; i++) {
         arr.push(i);
     }
     return arr;
@@ -55,7 +55,7 @@ export function maxAndMin(numbers) {
 export function countArray(array) {
     let dict = new Object();    // Create object to store seen keys and their corresponding counts
 
-    for (key in array) {
+    for (let key in array) {
         if (key in dict) {
             dict.key += 1;
         } else {
