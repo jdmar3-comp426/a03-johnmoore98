@@ -99,7 +99,7 @@ export function removeKeyNonDestructive(object, key) {
  */
 export function removeKeys(object, keyList) {
    var obj = object;
-   for (const key of keyList) {
+   for (var key of keyList) {
       var {key, obj} = obj;
    }
    return obj;
