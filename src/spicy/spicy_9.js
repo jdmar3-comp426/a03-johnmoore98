@@ -28,7 +28,7 @@ export const repeat = (fn, n, ...params) => {
  *   10 times.
  */
 export const repeatDemo = () => {
-    console.log(repeat(console.log, 10, "Hello, world!"));
+    repeat(console.log, 10, "Hello, world!");
 };
 
 
@@ -91,7 +91,20 @@ export const tenTimesFifty = () => {
  *    everyEven([1, 1, 0, 1, 1], x => x === 1)  <--  returns false
  */
 export const everyEven = (arr, test) => {
+    arr.forEach(function(value, index, arr) {
+        if (index % 2 == 0 && !test(value)) {
+            arr[index] = 0;
+        } else {
+            arr[index] = 1
+        }
+    })
 
+    // Sum elements of modified arr. If sum < arr.length, then not every even passed
+    var arr_sum = arr.reduce(
+        ( previousValue, currentValue ) => previousValue + currentValue,
+        0
+      )
+    return !(arr_sum < arr.length)
 };
 
 
