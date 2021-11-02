@@ -95,7 +95,7 @@ export const everyEven = (arr, test) => {
         if (index % 2 == 0 && !test(value)) {
             arr[index] = 0;
         } else {
-            arr[index] = 1
+            arr[index] = 1;
         }
     })
 
@@ -103,8 +103,8 @@ export const everyEven = (arr, test) => {
     var arr_sum = arr.reduce(
         ( previousValue, currentValue ) => previousValue + currentValue,
         0
-      )
-    return !(arr_sum < arr.length)
+    );
+    return !(arr_sum < arr.length);
 };
 
 
@@ -128,7 +128,20 @@ export const everyEven = (arr, test) => {
  *    someEven([0, 0, 0, 0, 0], x => x === 0)  <--  returns true
  */
 export const someEven = (arr, test) => {
+    arr.forEach(function(value, index, arr) {
+        if (index % 2 == 0 && test(value)) {
+            arr[index] = 1;
+        } else {
+            arr[index] = 0;
+        }
+    })
 
+    // Sum elements of modified arr. If sum > 0, then at least one even elem passed
+    var arr_sum = arr.reduce(
+        ( previousValue, currentValue ) => previousValue + currentValue,
+        0
+    );
+    return arr_sum > 0;
 };
 
 
@@ -154,7 +167,16 @@ export const someEven = (arr, test) => {
  *       -->  { pass: [1, 5, 31], fail: [90] }
  */
 export const filter = (arr, test) => {
-
+    const filtered_arr = arr.filter((elem, index) => test(elem));
+    filter_map = {"pass" : [], "fail" : []};
+    arr.forEach(function(elem, index) {
+        if (filtered_arr[index] == 1) {
+            filter_map["pass"].push(elem);
+        } else {
+            filter_map["fail"].push(elem);
+        }
+    })
+    return filter_map;
 };
 
 
