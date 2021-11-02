@@ -170,7 +170,7 @@ export const filter = (arr, test) => {
     const filtered_arr = arr.filter((elem, index) => test(elem));
     var filter_map = {"pass" : [], "fail" : []};
     arr.forEach(function(elem, index) {
-        if (filtered_arr[index] == 1) {
+        if (filtered_arr[index] == true) {
             filter_map["pass"].push(elem);
         } else {
             filter_map["fail"].push(elem);
