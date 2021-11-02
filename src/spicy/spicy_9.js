@@ -167,17 +167,7 @@ export const someEven = (arr, test) => {
  *       -->  { pass: [1, 5, 31], fail: [90] }
  */
 export const filter = (arr, test) => {
-    const filtered_arr = arr.filter(test);
-    console.log(filtered_arr);
-    var filter_map = {"pass" : [], "fail" : []};
-    arr.forEach(function(elem, index) {
-        if (filtered_arr[index] == true) {
-            filter_map["pass"].push(elem);
-        } else {
-            filter_map["fail"].push(elem);
-        }
-    })
-    return filter_map;
+    return {"pass" : arr.filter(test), "fail" : arr.filter(elem => !test(elem))};
 };
 
 
