@@ -15,7 +15,11 @@
  *                from calling the function
  */
 export const repeat = (fn, n, ...params) => {
-
+    const arr = []
+    for (let i = 0; i < n; i++) {
+        arr.push(fn(...params));
+    }
+    return arr;
 };
 
 
@@ -24,7 +28,7 @@ export const repeat = (fn, n, ...params) => {
  *   10 times.
  */
 export const repeatDemo = () => {
-
+    repeat(console.log, 10, "Hello, world!");
 };
 
 
@@ -41,7 +45,9 @@ export const repeatDemo = () => {
  *   product of num1 and num2.
  */
 export const multiplyBy = (num1) => {
-
+    return function(num2) {
+        return num1*num2;
+    }
 };
 
 
@@ -49,7 +55,7 @@ export const multiplyBy = (num1) => {
  * Use the multiplyBy function to create and export a function named
  *   "tenTimes" that multiplies a number by 10.
  */
-export const tenTimes = undefined;
+export const tenTimes = multiplyBy(10);
 
 
 /**
@@ -57,7 +63,7 @@ export const tenTimes = undefined;
  *   function to multiply 50 by 10 and returns the result.
  */
 export const tenTimesFifty = () => {
-
+    return tenTimes(50);
 };
 
 
@@ -85,7 +91,20 @@ export const tenTimesFifty = () => {
  *    everyEven([1, 1, 0, 1, 1], x => x === 1)  <--  returns false
  */
 export const everyEven = (arr, test) => {
+    arr.forEach(function(value, index, arr) {
+        if (index % 2 == 0 && !test(value)) {
+            arr[index] = 0;
+        } else {
+            arr[index] = 1;
+        }
+    })
 
+    // Sum elements of modified arr. If sum < arr.length, then not every even passed
+    var arr_sum = arr.reduce(
+        ( previousValue, currentValue ) => previousValue + currentValue,
+        0
+    );
+    return !(arr_sum < arr.length);
 };
 
 
@@ -109,7 +128,20 @@ export const everyEven = (arr, test) => {
  *    someEven([0, 0, 0, 0, 0], x => x === 0)  <--  returns true
  */
 export const someEven = (arr, test) => {
+    arr.forEach(function(value, index, arr) {
+        if (index % 2 == 0 && test(value)) {
+            arr[index] = 1;
+        } else {
+            arr[index] = 0;
+        }
+    })
 
+    // Sum elements of modified arr. If sum > 0, then at least one even elem passed
+    var arr_sum = arr.reduce(
+        ( previousValue, currentValue ) => previousValue + currentValue,
+        0
+    );
+    return arr_sum > 0;
 };
 
 
@@ -135,7 +167,7 @@ export const someEven = (arr, test) => {
  *       -->  { pass: [1, 5, 31], fail: [90] }
  */
 export const filter = (arr, test) => {
-
+    return {"pass" : arr.filter(test), "fail" : arr.filter(elem => !test(elem))};
 };
 
 
@@ -145,7 +177,7 @@ export const filter = (arr, test) => {
  *   odd numbers. Use the "everyEven" function in this function.
  */
 export const allEvensAreOdd = (arr) => {
-
+    return everyEven(arr, ((elem) => elem % 2 == 1));
 };
 
 
@@ -155,7 +187,7 @@ export const allEvensAreOdd = (arr) => {
  *   array is an odd number. Use the "someEven" function in this function.
  */
 export const anEvenIsOdd = (arr) => {
-
+    return someEven(arr, ((elem) => elem % 2 == 1));
 };
 
 
@@ -166,5 +198,6 @@ export const anEvenIsOdd = (arr) => {
  *   pass the test. You must use the filter function.
  */
 export const hasExactly = (arr, test, n) => {
-
+    var res = filter(arr, test);
+    return res["pass"].length == n;
 };

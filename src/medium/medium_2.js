@@ -20,11 +20,13 @@ see under the methods section
  * @param {allCarStats.ratioHybrids} ratio of cars that are hybrids
  */
 export const allCarStats = {
-    avgMpg: undefined,
-    allYearStats: undefined,
-    ratioHybrids: undefined,
+    avgMpg: {
+        city: mpg_data.reduce( (previous_val, curr_val) => curr_val.city_mpg + previous_val, 0) / mpg_data.length,
+        highway: mpg_data.reduce( (previous_val, curr_val) => curr_val.highway_mpg + previous_val, 0) / mpg_data.length
+    },
+    allYearStats: getStatistics(mpg_data.map( x => x.year)),
+    ratioHybrids: mpg_data.filter(x => x.hybrid == true).length / mpg_data.length
 };
-
 
 /**
  * HINT: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
@@ -84,6 +86,61 @@ export const allCarStats = {
  * }
  */
 export const moreStats = {
-    makerHybrids: undefined,
-    avgMpgByYearAndHybrid: undefined
+    makerHybrids: getMakerHybrids(),
+    avgMpgByYearAndHybrid: getavgMpgByYearAndHybrid()
 };
+
+/*
+* @param {moreStats.makerHybrids} Array of objects where keys are the `make` of the car and
+* a list of `hybrids` available (their `id` string). Don't show car makes with 0 hybrids. Sort by the number of hybrids
+* in descending order.
+*/
+
+export function getMakerHybrids() {
+    var obj = {}
+    mpg_data.forEach(function(value) {
+        if (value.hybrid == true) {
+            if (obj[value.make] != undefined) {
+                obj[value.make].push(value.id);
+            } else {
+                obj[value.make] = [value.id];
+            }
+        }
+    })
+
+    var arr = [];
+    for (let maker in obj) {
+        arr.push({
+            make: maker,
+            hybrids: obj[maker]
+        })
+    }
+    return arr.sort( (val1, val2) => val2.hybrids.length-val1.hybrids.length);
+}
+
+export function getavgMpgByYearAndHybrid() {
+    const year_list = []
+    const obj = {}
+    mpg_data.forEach(function(value) {
+        if (!year_list.includes(value.year)) {
+            year_list.push(value.year);
+        }
+    })
+    
+    year_list.forEach(function(year) {
+        let year_cars_hybrid = mpg_data.filter(car => car.year == year && car.hybrid == true);
+        let year_cars_notHybrid = mpg_data.filter(car => car.year == year && car.hybrid == false);
+        obj[year] = {
+            hybrid: {
+                city: year_cars_hybrid.reduce((previous_val, current_val) => previous_val + current_val.city_mpg, 0) / year_cars_hybrid.length,
+                highway: year_cars_hybrid.reduce((previous_val, current_val) => previous_val + current_val.highway_mpg, 0) / year_cars_hybrid.length
+            },
+            notHybrid: {
+                city: year_cars_notHybrid.reduce((previous_val, current_val) => previous_val + current_val.city_mpg, 0) / year_cars_notHybrid.length,
+                highway: year_cars_notHybrid.reduce((previous_val, current_val) => previous_val + current_val.highway_mpg, 0) / year_cars_notHybrid.length
+            }
+        }
+    })
+
+    return obj;
+}
